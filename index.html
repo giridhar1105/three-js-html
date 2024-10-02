@@ -8,15 +8,25 @@
         html, body {
             margin: 0;
             height: 100%;
+            display: flex;
+            flex-direction: column;
         }
         #c {
             width: 100%;
             height: 100%;
             display: block;
+            flex: 1;
+        }
+        #toggleButton {
+            padding: 10px 20px;
+            margin: 10px;
+            font-size: 16px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
+    <button id="toggleButton">Toggle Background Color</button>
     <canvas id="c"></canvas>
     <script type="importmap">
         {
@@ -30,10 +40,13 @@
         import * as THREE from 'three';
         import { OrbitControls } from 'OrbitControls';
 
+        let isWhiteBackground = true;
+
         function main() {
             const canvas = document.querySelector('#c');
             const renderer = new THREE.WebGLRenderer({ antialias: true, canvas });
             renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.setClearColor(0xffffff); // Start with white background
 
             const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
             camera.position.set(3, 2, 5); // Set camera position
@@ -78,6 +91,13 @@
             }
 
             requestAnimationFrame(render);
+
+            // Button event listener to toggle background color
+            document.getElementById('toggleButton').addEventListener('click', () => {
+                isWhiteBackground = !isWhiteBackground;
+                const newColor = isWhiteBackground ? 0xffffff : 0x000000; // White or Black
+                renderer.setClearColor(newColor);
+            });
         }
 
         function addLighting(scene) {

@@ -83,6 +83,13 @@
                     const rotation = time * speed;
                     cube.rotation.x = rotation;
                     cube.rotation.y = rotation;
+
+                    // Change color based on rotation
+                    const r = Math.abs(Math.sin(rotation)) * 255;
+                    const g = Math.abs(Math.sin(rotation + Math.PI / 3)) * 255;
+                    const b = Math.abs(Math.sin(rotation + (2 * Math.PI) / 3)) * 255;
+
+                    cube.material.color.setRGB(r / 255, g / 255, b / 255);
                 });
 
                 controls.update(); // Update controls

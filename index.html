@@ -21,20 +21,27 @@
     <script type="importmap">
         {
             "imports": {
-                "three": "https://threejs.org/build/three.module.js"
+                "three": "https://threejs.org/build/three.module.js",
+                "OrbitControls": "https://threejs.org/examples/jsm/controls/OrbitControls.js"
             }
         }
     </script>
     <script type="module">
         import * as THREE from 'three';
+        import { OrbitControls } from 'OrbitControls';
 
         function main() {
             const canvas = document.querySelector('#c');
             const renderer = new THREE.WebGLRenderer({ antialias: true, canvas });
             renderer.setPixelRatio(window.devicePixelRatio);
 
-            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 5);
-            camera.position.z = 2;
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100);
+            camera.position.set(3, 2, 5); // Set camera position
+            camera.lookAt(0, 0, 0); // Look at the origin
+
+            const controls = new OrbitControls(camera, canvas); // Add orbit controls
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.25;
 
             const scene = new THREE.Scene();
             addLighting(scene);
@@ -65,6 +72,7 @@
                     cube.rotation.y = rotation;
                 });
 
+                controls.update(); // Update controls
                 renderer.render(scene, camera);
                 requestAnimationFrame(render);
             }
